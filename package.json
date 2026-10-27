@@ -1,0 +1,140 @@
+{
+  "name": "formatflip",
+  "displayName": "FormatFlip - Image to WebP Converter",
+  "description": "Convert images to WebP in VS Code with clipboard support, drag-and-drop, batch renaming, and image size statistics.",
+  "version": "0.0.2",
+  "publisher": "elrhea-desouza",
+  "icon": "src/assets/formatflip-icon.png",
+  "keywords": [
+    "webp",
+    "webp converter",
+    "image converter",
+    "image optimization",
+    "image compression",
+    "png to webp",
+    "jpg to webp",
+    "clipboard image",
+    "batch image conversion"
+  ],
+  "engines": {
+    "vscode": "^1.140.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ElrheaDeSouza/formatflip-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ElrheaDeSouza/formatflip-vscode/issues"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "contributes": {
+    "commands": [
+      {
+        "command": "formatflip.openDropPanel",
+        "title": "FormatFlip: Open Drag-and-Drop Panel"
+      },
+      {
+        "command": "formatflip.convertSelectedImages",
+        "title": "FormatFlip: Convert Selected Images to WebP"
+      },
+      {
+        "command": "formatflip.saveClipboardImage",
+        "title": "FormatFlip: Save Clipboard Image as WebP"
+      },
+      {
+        "command": "formatflip.copyImagePath",
+        "title": "FormatFlip: Copy Image Path"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "formatflip.saveClipboardImage",
+        "key": "ctrl+alt+w",
+        "when": "!terminalFocus"
+      },
+      {
+        "command": "formatflip.openDropPanel",
+        "key": "ctrl+alt+p",
+        "when": "!terminalFocus"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "formatflip.convertSelectedImages",
+          "when": "resourceScheme == file",
+          "group": "navigation@8"
+        },
+        {
+          "command": "formatflip.copyImagePath",
+          "when": "resourceScheme == file && !explorerResourceIsFolder",
+          "group": "navigation@9"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "FormatFlip",
+      "properties": {
+        "formatflip.outputDirectory": {
+          "type": "string",
+          "default": "public/images",
+          "description": "Default folder inside the workspace where converted images are saved."
+        },
+        "formatflip.quality": {
+          "type": "number",
+          "default": 82,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "WebP image quality from 1 to 100."
+        },
+        "formatflip.askForFilename": {
+          "type": "boolean",
+          "default": false,
+          "description": "Legacy setting retained for compatibility; FormatFlip now asks for names in batch Explorer conversion."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "24.x",
+    "@types/vscode": "^1.140.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.0.0",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.5.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1"
+  },
+  "overrides": {
+    "diff": "^8.0.4",
+    "serialize-javascript": "^7.0.6"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
+  }
+}
